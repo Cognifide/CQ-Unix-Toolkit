@@ -44,7 +44,7 @@ else
 fi
 
 dir=$(dirname "${0}")
-basedir=$(dirname "${dir}")
+basedir=$dir
 ${ECHOX} "I assume that CQ UNIX toolkit are in: '${basedir}'\n"
 if [ ! -d "${INSTALL_DIR}" ] 
 then
