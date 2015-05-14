@@ -264,17 +264,27 @@ _process_parse_mode()
         getopts_failed=1
         while getopts ":${PARSE_OPTIONS}" option
         do
+            eval prev_param='$'$((${OPTIND}-1))
             getopts_failed=0
             case "${option}" in
-                u) 
-                    username=${OPTARG}; 
-                    explicit_option=1;;
-                p) 
-                    password=${OPTARG}; 
-                    explicit_option=1;;
-                i) 
-                    instance=$(echo "${OPTARG}" | ${SEDX} 's#[/]+$##');
-                    explicit_option=1;;
+                u)
+                    if [ "${prev_param}" != "-u${OPTARG}" ]; then
+                        username=${OPTARG}
+                        explicit_option=1
+                    fi
+                    ;;
+                p)
+                    if [ "${prev_param}" != "-p${OPTARG}" ]; then
+                        password=${OPTARG}
+                        explicit_option=1
+                    fi
+                    ;;
+                i)
+                    if [ "${prev_param}" != "-i${OPTARG}" ]; then
+                        instance=$(echo "${OPTARG}" | ${SEDX} 's#[/]+$##')
+                        explicit_option=1
+                    fi
+                    ;;
             esac
         done
         if [ ${getopts_failed} -eq 1 ]
@@ -390,8 +400,8 @@ while getopts "${OPTIONS}" option
 do
     mode=${option}
     case ${option} in
-        P) 
-            cq_api_output=$(_process_parse_mode "${@}"); 
+        P)
+            cq_api_output=$(_process_parse_mode "${@}");
             printf "%s\n" "${cq_api_output}"
             exit ${?};;
         u) username=${OPTARG}; explicit_option=1;;
