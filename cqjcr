@@ -358,7 +358,7 @@ while getopts ":l:s:a:c:t:n:v:d:m${apigetopts}" opt; do
       root="${OPTARG}";;
      d)
       delete=1
-      root="${OPTARG}";;
+      root="$(echo "${OPTARG}" | sed 's# #%20#g')";;
      m)
       machine_friendly=1;;
      t)
