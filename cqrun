@@ -114,6 +114,9 @@ STATUSCODE=$(echo "${STATUS}" | tail -n 1)
 "${API}" -H "${STATUSCODE}"
 EXITCODE2=${?}
 STATUS=$(echo "${STATUS}" | sed '$d')
+INNERHTTPCODE=$(echo "${STATUS}" | xmllint --xpath "string(//status/@code)" -)
+"${API}" -H "${INNERHTTPCODE}"
+EXITCODE3=${?}
 echo "${STATUS}"
-exit $((EXITCODE + EXITCODE2))
+exit $((EXITCODE + EXITCODE2 + EXITCODE3))
 
